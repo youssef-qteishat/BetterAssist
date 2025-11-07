@@ -1,21 +1,18 @@
-<!--
-  This example requires updating your template:
+<script>
+	let email = $state('');
+	let password = $state('');
 
-  ```
-  <html class="h-full bg-gray-900">
-  <body class="h-full">
-  ```
--->
+	function handleSubmit() {
+		console.log('Submitted', email, password);
+	}
+</script>
+
 <div class="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
 	<h1 class="mt-10 text-center text-2xl/9 font-bold tracking-tight text-white">
 		BetterAssist: Transfer Planning Simplified
 	</h1>
 	<div class="sm:mx-auto sm:w-full sm:max-w-sm">
-		<img
-			src="https://tailwindcss.com/plus-assets/img/logos/mark.svg?color=indigo&shade=500"
-			alt="Your Company"
-			class="mx-auto h-10 w-auto"
-		/>
+		<img src="./../better-assist-logo.png" alt="Your Company" class="mx-auto h-24 w-auto mt-10" />
 		<h2 class="mt-10 text-center text-2xl/9 font-bold tracking-tight text-white">
 			Sign in to your account
 		</h2>
@@ -33,6 +30,7 @@
 						required
 						autocomplete="email"
 						class="block w-full rounded-md bg-white/5 px-3 py-1.5 text-base text-white outline-1 -outline-offset-1 outline-white/10 placeholder:text-gray-500 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-500 sm:text-sm/6"
+						bind:value={email}
 					/>
 				</div>
 			</div>
@@ -54,6 +52,7 @@
 						required
 						autocomplete="current-password"
 						class="block w-full rounded-md bg-white/5 px-3 py-1.5 text-base text-white outline-1 -outline-offset-1 outline-white/10 placeholder:text-gray-500 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-500 sm:text-sm/6"
+						bind:value={password}
 					/>
 				</div>
 			</div>
@@ -62,7 +61,7 @@
 				<button
 					type="submit"
 					class="flex w-full justify-center rounded-md bg-indigo-500 px-3 py-1.5 text-sm/6 font-semibold text-white hover:bg-indigo-400 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500"
-					>Sign in</button
+					onclick={handleSubmit}>Sign in</button
 				>
 			</div>
 		</form>
