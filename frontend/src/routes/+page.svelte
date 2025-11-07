@@ -1,9 +1,15 @@
-<script>
-	let email = $state('');
-	let password = $state('');
+<script lang="ts">
+	let email = '';
+	let password = '';
 
-	function handleSubmit() {
-		console.log('Submitted', email, password);
+	async function handleSubmit(e: Event) {
+		e.preventDefault();
+		const response = await fetch('/api/auth/login', {
+			method: 'POST',
+			body: JSON.stringify({ email, password })
+		});
+		const data = await response.json();
+		console.log(data);
 	}
 </script>
 
@@ -38,11 +44,6 @@
 			<div>
 				<div class="flex items-center justify-between">
 					<label for="password" class="block text-sm/6 font-medium text-gray-100">Password</label>
-					<div class="text-sm">
-						<a href="#" class="font-semibold text-indigo-400 hover:text-indigo-300"
-							>Forgot password?</a
-						>
-					</div>
 				</div>
 				<div class="mt-2">
 					<input
@@ -61,16 +62,9 @@
 				<button
 					type="submit"
 					class="flex w-full justify-center rounded-md bg-indigo-500 px-3 py-1.5 text-sm/6 font-semibold text-white hover:bg-indigo-400 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500"
-					onclick={handleSubmit}>Sign in</button
+					on:click={handleSubmit}>Sign in</button
 				>
 			</div>
 		</form>
-
-		<p class="mt-10 text-center text-sm/6 text-gray-400">
-			Not a member?
-			<a href="#" class="font-semibold text-indigo-400 hover:text-indigo-300"
-				>Start a 14 day free trial</a
-			>
-		</p>
 	</div>
 </div>
