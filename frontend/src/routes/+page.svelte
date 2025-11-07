@@ -68,6 +68,10 @@
 					on:click={handleSubmit}>Sign in</button
 				>
 			</div>
+
+			<div class="flex justify-center">
+				<a href="/register" class="font-semibold text-indigo-400 hover:text-indigo-300">Don't have an account?</a>
+			</div>
 		</form>
 	</div>
 </div>
