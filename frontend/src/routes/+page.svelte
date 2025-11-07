@@ -4,12 +4,15 @@
 
 	async function handleSubmit(e: Event) {
 		e.preventDefault();
-		const response = await fetch('/api/auth/login', {
+		const response = await fetch('http://localhost:8000/api/auth/login', {
 			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json'
+			},
 			body: JSON.stringify({ email, password })
 		});
-		const data = await response.json();
-		console.log(data);
+		// const data = await response.json();
+		console.log(response);
 	}
 </script>
 
