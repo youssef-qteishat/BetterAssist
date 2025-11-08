@@ -9,22 +9,24 @@
 		e.preventDefault();
 
 		if (password !== confirmPassword) {
-			console.error('Passwords do not match!');
+			alert('Passwords do not match!');
 			return;
 		}
 
 		try {
+			console.log('Registering user with:', { firstName, lastName, email, password });
 			const response = await fetch('http://localhost:8000/api/auth/register', {
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json'
 				},
-				body: JSON.stringify({ email, password })
+				body: JSON.stringify({ firstName, lastName, email, password })
 			});
 
 			if (response.ok) {
 				console.log('Registration successful!');
-				window.location.href = '/login';
+				console.log('Response:', response);
+				// window.location.href = '/login';
 			} else {
 				const errorData = await response.json();
 				console.error('Registration failed:', errorData);
