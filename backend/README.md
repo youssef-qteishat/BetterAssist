@@ -1,4 +1,4 @@
-# Running the FastAPI Backend
+# Running the Backend
 
 ## Prerequisites
 
@@ -12,8 +12,8 @@
 uv sync
 ```
 
-## Running the Backend
+## Running the Server
 
 ```bash
-uv run main.py
+uv run fastapi dev main.py
 ```
