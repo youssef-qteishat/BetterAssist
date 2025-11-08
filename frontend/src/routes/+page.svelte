@@ -11,8 +11,8 @@
 			},
 			body: JSON.stringify({ email, password })
 		});
-		// const data = await response.json();
-		console.log(response);
+		const data = await response.json();
+		console.log(data);
 	}
 </script>
 
