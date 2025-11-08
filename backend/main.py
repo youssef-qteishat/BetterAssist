@@ -1,5 +1,6 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
+from pydantic import BaseModel
 
 app = FastAPI()
 
@@ -17,3 +18,13 @@ app.add_middleware(
 def login():
     print("Login successful")
     return {"message": "Login successful"}
+
+class RegisterRequest(BaseModel):
+    email: str
+    password: str
+
+@app.post("/api/auth/register")
+async def register_user(request: RegisterRequest):
+    if request.email == "test@example.com":
+        raise HTTPException(status_code=400, detail="User already exists")
+    return {"message": "Register successful"}

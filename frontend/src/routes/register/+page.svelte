@@ -1,25 +1,37 @@
 <script lang="ts">
     let email = '';
     let password = '';
-    let confirmPassword = ''; // New variable for confirm password
+    let confirmPassword = '';
 
     async function handleRegister(e: Event) {
         e.preventDefault();
 
-        // Check if passwords match
         if (password !== confirmPassword) {
             console.error('Passwords do not match!');
             return;
         }
 
-        const response = await fetch('http://localhost:8000/api/auth/register', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ email, password })
-        });
-        console.log(response);
+        try {
+            const response = await fetch('http://localhost:8000/api/auth/register', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ email, password })
+            });
+
+            if (response.ok) {
+                console.log('Registration successful!');
+                window.location.href = '/login';
+            } else {
+                const errorData = await response.json();
+                console.error('Registration failed:', errorData);
+                alert(`Registration failed: ${errorData.message || 'Unknown error'}`);
+            }
+        } catch (error) {
+            console.error('Error during registration:', error);
+            alert('An error occurred. Please try again later.');
+        }
     }
 </script>
 
