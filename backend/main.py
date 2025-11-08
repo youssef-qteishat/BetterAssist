@@ -1,16 +1,20 @@
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
+from supabase_init import supabase
+
 
 class UserLogin(BaseModel):
     email: str
     password: str
 
+
 class RegisterRequest(BaseModel):
-    first_name: str
-    last_name: str
+    firstName: str
+    lastName: str
     email: str
     password: str
+
 
 app = FastAPI()
 
@@ -39,8 +43,23 @@ async def login(user_login: UserLogin):
     except Exception as e:
         return {"error": str(e)}
 
+
 @app.post("/api/auth/register")
-async def register_user(request: RegisterRequest):
-    if request.email == "test@example.com":
-        raise HTTPException(status_code=400, detail="User already exists")
-    return {"message": "Register successful"}
+async def register_user(register_request: RegisterRequest):
+    try:
+        response = supabase.auth.sign_up(
+            {
+                "email": register_request.email,
+                "password": register_request.password,
+                "options": {
+                    "email_redirect_to": "http://localhost:8080/",
+                    "data": {
+                        "first_name": register_request.firstName,
+                        "last_name": register_request.lastName,
+                    }
+                },
+            }
+        )
+        return {"user": response.user.dict(), "session": response.session.dict()}
+    except Exception as e:
+        return {"error": str(e)}
