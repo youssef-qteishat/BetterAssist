@@ -1,11 +1,14 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
 	import { sessionStore } from '$lib/sessionStore';
+	import { Jumper } from 'svelte-loading-spinners';
 	let email = '';
 	let password = '';
+	let loading = false;
 
 	async function handleSubmit(e: Event) {
 		e.preventDefault();
+		loading = true;
 		const response = await fetch('http://localhost:8000/api/auth/login', {
 			method: 'POST',
 			headers: {
@@ -22,6 +25,7 @@
 		} else {
 			console.error('Login failed:', data.error);
 		}
+		loading = false;
 	}
 </script>
 
@@ -74,12 +78,20 @@
 				<button
 					type="submit"
 					class="flex w-full justify-center rounded-md bg-indigo-500 px-3 py-1.5 text-sm/6 font-semibold text-white hover:bg-indigo-400 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500"
-					on:click={handleSubmit}>Sign in</button
+					on:click={handleSubmit}
 				>
+					{#if loading}
+						<Jumper size="25" color="#ffffff" unit="px" duration="1s" />
+					{:else}
+						Sign in
+					{/if}
+				</button>
 			</div>
 
 			<div class="flex justify-center">
-				<a href="/register" class="font-semibold text-indigo-400 hover:text-indigo-300">Don't have an account?</a>
+				<a href="/register" class="font-semibold text-indigo-400 hover:text-indigo-300"
+					>Don't have an account?</a
+				>
 			</div>
 		</form>
 	</div>
