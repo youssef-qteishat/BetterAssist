@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { goto } from '$app/navigation';
+	import { sessionStore } from '$lib/sessionStore';
 	let email = '';
 	let password = '';
 
@@ -13,6 +15,13 @@
 		});
 		const data = await response.json();
 		console.log(data);
+
+		if (data.user && data.user.id) {
+			sessionStore.set({ user: data.user, session: data.session });
+			await goto(`/user/${data.user.id}`);
+		} else {
+			console.error('Login failed:', data.error);
+		}
 	}
 </script>
 
