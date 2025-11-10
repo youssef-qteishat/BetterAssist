@@ -1,8 +1,10 @@
 from typing import Union
 from fastapi import FastAPI, HTTPException, UploadFile, File
+from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from agent.agent import agent
 from starlette.responses import JSONResponse
+from supabase_init import supabase
 from utils import ingest_articulation_pdf  # your ingestion pipeline function
 
 app = FastAPI()
@@ -10,13 +12,41 @@ app = FastAPI()
 class Query(BaseModel):
     query: str
 
-@app.get("/")
-def read_root():
-    return {"Hello": "World"}
+class UserLogin(BaseModel):
+    email: str
+    password: str
 
-@app.get("/items/{item_id}")
-def read_item(item_id: int, q: Union[str, None] = None):
-    return {"item_id": item_id, "q": q}
+
+class RegisterRequest(BaseModel):
+    firstName: str
+    lastName: str
+    email: str
+    password: str
+
+# Configure CORS
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:8080"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+
+# Handle user authentication
+@app.post("/api/auth/login")
+async def login(user_login: UserLogin):
+    try:
+        print("Logging with email:", user_login.email)
+        response = supabase.auth.sign_in_with_password(
+            {
+                "email": user_login.email,
+                "password": user_login.password,
+            }
+        )
+        return {"user": response.user.dict(), "session": response.session.dict()}
+    except Exception as e:
+        return {"error": str(e)}
 
 @app.post("/query")
 async def run_agent(query: Query):
@@ -41,3 +71,23 @@ async def ingest_pdf(file: UploadFile = File(...)):
         return JSONResponse(content={"message": f"Successfully ingested {file.filename}"})
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Ingestion failed: {str(e)}")
+
+@app.post("/api/auth/register")
+async def register_user(register_request: RegisterRequest):
+    try:
+        response = supabase.auth.sign_up(
+            {
+                "email": register_request.email,
+                "password": register_request.password,
+                "options": {
+                    "email_redirect_to": "http://localhost:8080/",
+                    "data": {
+                        "first_name": register_request.firstName,
+                        "last_name": register_request.lastName,
+                    }
+                },
+            }
+        )
+        return {"user": response.user.dict(), "session": response.session.dict()}
+    except Exception as e:
+        return {"error": str(e)}
