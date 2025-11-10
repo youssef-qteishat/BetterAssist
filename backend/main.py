@@ -1,8 +1,16 @@
-from fastapi import FastAPI, HTTPException
+from typing import Union
+from fastapi import FastAPI, HTTPException, UploadFile, File
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
+from agent.agent import agent
+from starlette.responses import JSONResponse
 from supabase_init import supabase
+from utils import ingest_articulation_pdf  # your ingestion pipeline function
 
+app = FastAPI()
+
+class Query(BaseModel):
+    query: str
 
 class UserLogin(BaseModel):
     email: str
@@ -14,9 +22,6 @@ class RegisterRequest(BaseModel):
     lastName: str
     email: str
     password: str
-
-
-app = FastAPI()
 
 # Configure CORS
 app.add_middleware(
@@ -43,6 +48,29 @@ async def login(user_login: UserLogin):
     except Exception as e:
         return {"error": str(e)}
 
+@app.post("/query")
+async def run_agent(query: Query):
+    try:
+        result = agent.run(query.query)
+        return {"response": result}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.post("/ingest")
+async def ingest_pdf(file: UploadFile = File(...)):
+    try:
+        # Save the uploaded PDF to a temporary location (or a configured directory)
+        contents = await file.read()
+        temp_path = f"/tmp/{file.filename}"
+        with open(temp_path, "wb") as f:
+            f.write(contents)
+
+        # Call your ingestion pipeline on the saved file
+        vectordb = ingest_articulation_pdf(temp_path)
+
+        return JSONResponse(content={"message": f"Successfully ingested {file.filename}"})
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Ingestion failed: {str(e)}")
 
 @app.post("/api/auth/register")
 async def register_user(register_request: RegisterRequest):
