@@ -3,12 +3,12 @@
 	import { sessionStore } from '$lib/sessionStore';
 	import { Jumper } from 'svelte-loading-spinners';
 	import { fade } from 'svelte/transition';
-	let email = '';
-	let password = '';
-	let loading = false;
-	let success = false;
-	let error = '';
-	let visible = false;
+	let email: string = '';
+	let password: string = '';
+	let loading: boolean = false;
+	let success: boolean = false;
+	let error: string = '';
+	let visible: boolean = false;
 	let messageTimeout: NodeJS.Timeout;
 
 	function showMessage() {
@@ -30,7 +30,7 @@
 		clearTimeout(messageTimeout);
 
 		try {
-			const response = await fetch('http://localhost:8000/api/auth/login', {
+			const response: Response = await fetch('http://localhost:8000/api/auth/login', {
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json'

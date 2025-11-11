@@ -2,15 +2,15 @@
 	import { Jumper } from 'svelte-loading-spinners';
 	import { fade } from 'svelte/transition';
 
-	let firstName = '';
-	let lastName = '';
-	let email = '';
-	let password = '';
-	let confirmPassword = '';
-	let loading = false;
-	let success = false;
-	let error = '';
-	let visible = false;
+	let firstName: string = '';
+	let lastName: string = '';
+	let email: string = '';
+	let password: string = '';
+	let confirmPassword: string = '';
+	let loading: boolean = false;
+	let success: boolean = false;
+	let error: string = '';
+	let visible: boolean = false;
 	let messageTimeout: NodeJS.Timeout;
 
 	function showMessage() {
@@ -40,7 +40,7 @@
 
 		try {
 			console.log('Registering user with:', { firstName, lastName, email, password });
-			const response = await fetch('http://localhost:8000/api/auth/register', {
+			const response: Response = await fetch('http://localhost:8000/api/auth/register', {
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json'
