@@ -15,6 +15,7 @@ app = FastAPI()
 class Query(BaseModel):
     query: str
 
+
 class UserLoginRequest(BaseModel):
     email: str
     password: str
