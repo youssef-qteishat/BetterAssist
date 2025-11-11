@@ -5,27 +5,42 @@
 	let email = '';
 	let password = '';
 	let loading = false;
+	let success = false;
+	let error = '';
 
 	async function handleSubmit(e: Event) {
 		e.preventDefault();
 		loading = true;
-		const response = await fetch('http://localhost:8000/api/auth/login', {
-			method: 'POST',
-			headers: {
-				'Content-Type': 'application/json'
-			},
-			body: JSON.stringify({ email, password })
-		});
-		const data = await response.json();
-		console.log(data);
+		error = '';
+		success = false;
 
-		if (data.user && data.user.id) {
-			sessionStore.set({ user: data.user, session: data.session });
-			await goto(`/user/${data.user.id}`);
-		} else {
-			console.error('Login failed:', data.error);
+		try {
+			const response = await fetch('http://localhost:8000/api/auth/login', {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				body: JSON.stringify({ email, password })
+			});
+
+			const data = await response.json();
+
+			if (!response.ok) {
+				error = data.error || 'Login failed';
+				return;
+			}
+
+			if (data.user?.id) {
+				success = true;
+				sessionStore.set({ user: data.user, session: data.session });
+				// Don't reset success state before navigation
+				await goto(`/user/${data.user.id}`);
+			}
+		} catch (err: any) {
+			error = err.message;
+		} finally {
+			loading = false;
 		}
-		loading = false;
 	}
 </script>
 
@@ -43,6 +58,13 @@
 	<div class="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
 		<form action="#" method="POST" class="space-y-6">
 			<div>
+				{#if error}
+					<p class="text-red-500">{error}</p>
+				{:else if success}
+					<p class="text-green-500">Login success! Loading user page...</p>
+				{:else if loading}
+					<p class="text-white-500">Logging in...</p>
+				{/if}
 				<label for="email" class="block text-sm/6 font-medium text-gray-100">Email address</label>
 				<div class="mt-2">
 					<input
