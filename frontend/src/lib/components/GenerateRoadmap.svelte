@@ -58,7 +58,7 @@
 		border-radius: 16px;
 		padding: 12px;
 		box-sizing: border-box;
-        background-color: white;
+        background-color: rgb(120, 60, 120);
 		overflow: hidden;
 	}
 
@@ -67,7 +67,7 @@
 		margin-top: 0;
 		font-weight: normal;
         padding-bottom: 15px;
-        color: black;
+        color: white;
 	}
 
 	.chat-log {
@@ -87,16 +87,16 @@
 		border-radius: 10px;
 		max-width: 85%;
 		word-wrap: break-word;
-        color: black;
+        color: white;
 	}
 
 	.chat-bubble.ai {
-        background-color: gray;
+        background-color: rgb(117, 23, 117);
 		align-self: flex-start;
 	}
 
 	.chat-bubble.user {
-		background-color: lightblue;
+		background-color: rgb(214, 8, 214);
 		align-self: flex-end;
 	}
 
@@ -112,16 +112,22 @@
 		border-radius: 16px;
 		padding: 8px 12px;
 		margin-right: 8px;
+		background-color: rgb(214, 8, 214);
+		color: white;
 	}
 
 	.chat-input button {
 		padding: 0 12px;
 		border: 1px solid black;
-		background-color: white;
-		color: black;
+		background-color: rgb(214, 8, 214);
+		color: white;
 		border-radius: 50%;
 		cursor: pointer;
 		font-size: 1.2em;
 		font-weight: bold;
 	}
+
+	input::placeholder {
+        color: white; 
+    }
 </style>
