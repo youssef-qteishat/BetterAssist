@@ -2,17 +2,32 @@
 	import { goto } from '$app/navigation';
 	import { sessionStore } from '$lib/sessionStore';
 	import { Jumper } from 'svelte-loading-spinners';
+	import { fade } from 'svelte/transition';
 	let email = '';
 	let password = '';
 	let loading = false;
 	let success = false;
 	let error = '';
+	let visible = false;
+	let messageTimeout: NodeJS.Timeout;
+
+	function showMessage() {
+		clearTimeout(messageTimeout);
+		visible = true;
+		messageTimeout = setTimeout(() => {
+			visible = false;
+			error = '';
+			success = false;
+		}, 3000);
+	}
 
 	async function handleSubmit(e: Event) {
 		e.preventDefault();
 		loading = true;
 		error = '';
 		success = false;
+		visible = false;
+		clearTimeout(messageTimeout);
 
 		try {
 			const response = await fetch('http://localhost:8000/api/auth/login', {
@@ -27,17 +42,20 @@
 			console.log('data', data);
 			if (!response.ok) {
 				error = data.detail || 'Login failed';
+				showMessage();
 				return;
 			}
 
 			if (data.user?.id) {
 				success = true;
 				sessionStore.set({ user: data.user, session: data.session });
+				showMessage();
 				// Don't reset success state before navigation
-				await goto(`/user/${data.user.id}`);
+				setTimeout(() => goto(`/user/${data.user.id}`), 2000);
 			}
 		} catch (err: any) {
 			error = err.message;
+			showMessage();
 		} finally {
 			loading = false;
 		}
@@ -58,15 +76,25 @@
 	<div class="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
 		<form action="#" method="POST" class="space-y-6">
 			<div>
-				{#if error}
+				{#if error && visible}
 					<div
-						class="flex items-center justify-center bg-red-500/10 border-2 border-red-500 rounded-md mb-2 transition"
+						transition:fade={{ duration: 200 }}
+						class="flex items-center justify-center bg-red-500/10 border-2 border-red-500 rounded-md mb-2"
+						on:outroend={() => {
+							error = '';
+							success = false;
+						}}
 					>
 						<p class="text-red-500 p-2">{error}</p>
 					</div>
-				{:else if success}
+				{:else if success && visible}
 					<div
-						class="flex items-center justify-center bg-green-500/10 border-2 border-green-500 rounded-md mb-2 transition"
+						transition:fade={{ duration: 200 }}
+						class="flex items-center justify-center bg-green-500/10 border-2 border-green-500 rounded-md mb-2"
+						on:outroend={() => {
+							error = '';
+							success = false;
+						}}
 					>
 						<p class="text-green-500 p-2">Login success! Loading user page...</p>
 					</div>
