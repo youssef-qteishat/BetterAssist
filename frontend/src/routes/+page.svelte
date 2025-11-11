@@ -24,9 +24,9 @@
 			});
 
 			const data = await response.json();
-
+			console.log('data', data);
 			if (!response.ok) {
-				error = data.error || 'Login failed';
+				error = data.detail || 'Login failed';
 				return;
 			}
 
@@ -59,11 +59,17 @@
 		<form action="#" method="POST" class="space-y-6">
 			<div>
 				{#if error}
-					<p class="text-red-500">{error}</p>
+					<div
+						class="flex items-center justify-center bg-red-500/10 border-2 border-red-500 rounded-md mb-2 transition"
+					>
+						<p class="text-red-500 p-2">{error}</p>
+					</div>
 				{:else if success}
-					<p class="text-green-500">Login success! Loading user page...</p>
-				{:else if loading}
-					<p class="text-white-500">Logging in...</p>
+					<div
+						class="flex items-center justify-center bg-green-500/10 border-2 border-green-500 rounded-md mb-2 transition"
+					>
+						<p class="text-green-500 p-2">Login success! Loading user page...</p>
+					</div>
 				{/if}
 				<label for="email" class="block text-sm/6 font-medium text-gray-100">Email address</label>
 				<div class="mt-2">
