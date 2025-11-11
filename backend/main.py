@@ -87,7 +87,8 @@ async def register_user(register_request: RegisterRequest):
                 },
             }
         )
-        print("Response:", type(response))
-        return {"user": response.user.dict(), "session": response.session.dict()}
+        print("Response:", response)
+        return {"user": response.user.dict()}
     except Exception as e:
+        print("Exception:", e)
         raise HTTPException(status_code=401, detail=str(e))
