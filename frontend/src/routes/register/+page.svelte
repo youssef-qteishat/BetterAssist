@@ -31,8 +31,29 @@
 		visible = false;
 		clearTimeout(messageTimeout);
 
+		if (!firstName || !lastName || !email || !password || !confirmPassword) {
+			error = 'All fields are required!';
+			loading = false;
+			showMessage();
+			return;
+		}
+
+		if (!email.includes('@')) {
+			error = 'Email must contain an @ symbol!';
+			loading = false;
+			showMessage();
+			return;
+		}
+
 		if (password !== confirmPassword) {
 			error = 'Passwords do not match!';
+			loading = false;
+			showMessage();
+			return;
+		}
+
+		if (password.length < 8) {
+			error = 'Password must be at least 8 characters long!';
 			loading = false;
 			showMessage();
 			return;
@@ -183,15 +204,17 @@
 			</div>
 
 			<div>
-				{#if loading}
-					<Jumper size="25" color="#ffffff" unit="px" duration="1s" />
-				{:else}
-					<button
-						type="submit"
-						class="flex w-full justify-center rounded-md bg-indigo-500 px-3 py-1.5 text-sm/6 font-semibold text-white hover:bg-indigo-400 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500"
-						on:click={handleRegister}>Sign Up</button
-					>
-				{/if}
+				<button
+					type="submit"
+					class="flex w-full justify-center rounded-md bg-indigo-500 px-3 py-1.5 text-sm/6 font-semibold text-white hover:bg-indigo-400 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500"
+					on:click={handleRegister}
+				>
+					{#if loading}
+						<Jumper size="25" color="#ffffff" unit="px" duration="1s" />
+					{:else}
+						Sign Up
+					{/if}
+				</button>
 			</div>
 
 			<div class="flex justify-center">
