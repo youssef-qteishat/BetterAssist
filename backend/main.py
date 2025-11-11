@@ -6,7 +6,6 @@ from agent.agent import agent
 from starlette.responses import JSONResponse
 from supabase_init import supabase
 from utils import ingest_articulation_pdf  # your ingestion pipeline function
-
 app = FastAPI()
 
 class Query(BaseModel):
