@@ -1,5 +1,7 @@
 <script lang="ts">
+	import { tick } from 'svelte';
 	let currentMessage = '';
+	let chatLogContainer: HTMLDivElement | null = null;
 
 	let chatLogs: { sender: 'user' | 'ai'; text: string }[] = [
 		{ sender: 'ai', text: 'Roadmap shows up here eventually' } 
@@ -13,13 +15,22 @@
 		chatLogs = [...chatLogs, { sender: 'user', text: currentMessage }];
 
 		currentMessage = '';
+
+		tick().then(() => {
+			if (chatLogContainer) {
+			chatLogContainer.scrollTo({
+				top: chatLogContainer.scrollHeight,
+				behavior: 'smooth'
+			});
+			}
+		});
 	}
 </script>
 
 <div class="roadmap-generator">
 	<h3>Generate a Roadmap</h3>
 
-	<div class="chat-log">
+	<div class="chat-log" bind:this={chatLogContainer}>
 		{#each chatLogs as log}
 			<div class="chat-bubble {log.sender}">
 				{log.text}
@@ -41,12 +52,14 @@
 	.roadmap-generator {
 		display: flex;
 		flex-direction: column;
-		height: 100%;
+		min-height: 0;
+		max-height: 70vh;
 		border: 2px solid black;
 		border-radius: 16px;
 		padding: 12px;
 		box-sizing: border-box;
         background-color: white;
+		overflow: hidden;
 	}
 
 	h3 {
@@ -59,10 +72,11 @@
 
 	.chat-log {
 		flex-grow: 1;
+		overflow-y: auto;
+		min-height: 0;
 		border: 2px solid black;
 		border-radius: 12px;
 		padding: 12px;
-		overflow-y: auto;
 		display: flex;
 		flex-direction: column;
 		gap: 8px;
