@@ -11,7 +11,7 @@ app = FastAPI()
 class Query(BaseModel):
     query: str
 
-class UserLogin(BaseModel):
+class UserLoginRequest(BaseModel):
     email: str
     password: str
 
@@ -34,7 +34,7 @@ app.add_middleware(
 
 # Handle user authentication
 @app.post("/api/auth/login")
-async def login(user_login: UserLogin):
+async def login(user_login: UserLoginRequest):
     try:
         print("Logging with email:", user_login.email)
         response = supabase.auth.sign_in_with_password(
@@ -87,6 +87,7 @@ async def register_user(register_request: RegisterRequest):
                 },
             }
         )
+        print("Response:", type(response))
         return {"user": response.user.dict(), "session": response.session.dict()}
     except Exception as e:
         raise HTTPException(status_code=401, detail=str(e))
