@@ -1,15 +1,40 @@
 <script lang="ts">
+	import { Jumper } from 'svelte-loading-spinners';
+	import { fade } from 'svelte/transition';
+
 	let firstName = '';
 	let lastName = '';
 	let email = '';
 	let password = '';
 	let confirmPassword = '';
+	let loading = false;
+	let success = false;
+	let error = '';
+	let visible = false;
+	let messageTimeout: NodeJS.Timeout;
+
+	function showMessage() {
+		clearTimeout(messageTimeout);
+		visible = true;
+		messageTimeout = setTimeout(() => {
+			visible = false;
+			error = '';
+			success = false;
+		}, 3000);
+	}
 
 	async function handleRegister(e: Event) {
 		e.preventDefault();
+		loading = true;
+		error = '';
+		success = false;
+		visible = false;
+		clearTimeout(messageTimeout);
 
 		if (password !== confirmPassword) {
-			alert('Passwords do not match!');
+			error = 'Passwords do not match!';
+			loading = false;
+			showMessage();
 			return;
 		}
 
@@ -26,15 +51,21 @@
 			if (response.ok) {
 				console.log('Registration successful!');
 				console.log('Response:', response);
+				success = true;
+				showMessage();
 				// window.location.href = '/login';
 			} else {
 				const errorData = await response.json();
 				console.error('Registration failed:', errorData);
-				alert(`Registration failed: ${errorData.message || 'Unknown error'}`);
+				error = errorData.detail || 'Unknown error';
+				showMessage();
 			}
-		} catch (error) {
+		} catch (error: any) {
 			console.error('Error during registration:', error);
-			alert('An error occurred. Please try again later.');
+			error = error.message || 'An error occurred. Please try again later.';
+			showMessage();
+		} finally {
+			loading = false;
 		}
 	}
 </script>
@@ -51,6 +82,31 @@
 	</div>
 
 	<div class="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
+		{#if error && visible}
+			<div
+				transition:fade={{ duration: 200 }}
+				class="flex items-center justify-center bg-red-500/10 border-2 border-red-500 rounded-md mb-2"
+				on:outroend={() => {
+					error = '';
+					success = false;
+				}}
+			>
+				<p class="text-red-500 p-2">{error}</p>
+			</div>
+		{:else if success && visible}
+			<div
+				transition:fade={{ duration: 200 }}
+				class="flex items-center justify-center bg-green-500/10 border-2 border-green-500 rounded-md mb-2"
+				on:outroend={() => {
+					error = '';
+					success = false;
+				}}
+			>
+				<p class="text-green-500 p-2">
+					Registration success! Please check your email to confirm your account.
+				</p>
+			</div>
+		{/if}
 		<form action="#" method="POST" class="space-y-6">
 			<div>
 				<label for="firstName" class="block text-sm/6 font-medium text-gray-100">First Name</label>
@@ -127,11 +183,15 @@
 			</div>
 
 			<div>
-				<button
-					type="submit"
-					class="flex w-full justify-center rounded-md bg-indigo-500 px-3 py-1.5 text-sm/6 font-semibold text-white hover:bg-indigo-400 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500"
-					on:click={handleRegister}>Sign Up</button
-				>
+				{#if loading}
+					<Jumper size="25" color="#ffffff" unit="px" duration="1s" />
+				{:else}
+					<button
+						type="submit"
+						class="flex w-full justify-center rounded-md bg-indigo-500 px-3 py-1.5 text-sm/6 font-semibold text-white hover:bg-indigo-400 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500"
+						on:click={handleRegister}>Sign Up</button
+					>
+				{/if}
 			</div>
 
 			<div class="flex justify-center">
