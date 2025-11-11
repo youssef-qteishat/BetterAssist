@@ -41,7 +41,7 @@ async def login(user_login: UserLogin):
         )
         return {"user": response.user.dict(), "session": response.session.dict()}
     except Exception as e:
-        return {"error": str(e)}
+        raise HTTPException(status_code=401, detail=str(e))
 
 
 @app.post("/api/auth/register")
@@ -62,4 +62,4 @@ async def register_user(register_request: RegisterRequest):
         )
         return {"user": response.user.dict(), "session": response.session.dict()}
     except Exception as e:
-        return {"error": str(e)}
+        raise HTTPException(status_code=401, detail=str(e))
