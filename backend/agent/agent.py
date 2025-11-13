@@ -1,6 +1,10 @@
 from langchain.agents import initialize_agent, Tool
 from langchain_openai import ChatOpenAI
 from langchain.memory import ConversationBufferMemory
+from dotenv import load_dotenv
+from db.chroma_init import vectordb
+
+load_dotenv()
 
 # Assume vectordb is your Chroma vector store instance initialized elsewhere
 # e.g., vectordb = ingest_articulation_pdf("path/to/articulation_agreement.pdf")
