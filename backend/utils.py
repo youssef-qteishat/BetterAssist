@@ -1,5 +1,5 @@
 import hashlib
-from langchain.document_loaders import UnstructuredLoader
+from langchain_unstructured import UnstructuredLoader
 from langchain.embeddings import OpenAIEmbeddings
 from db.chroma_init import init_chroma_store
 
