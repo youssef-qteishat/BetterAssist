@@ -67,39 +67,3 @@
 		z-index: 10;
 	}
 </style>
-
-<style>
-	:global(body) {
-		display: flex;
-		justify-content: center;
-		align-items: center;
-		min-height: 100vh;
-		background-color: gray;
-		margin: 0;
-	}
-
-	.welcome-text {
-		position: absolute;
-		top: 40px;
-		left: 50%;
-		transform: translateX(-50%);
-		font-size: 1.5em;
-		font-weight: normal;
-		z-index: 10;
-		margin: 0;
-		padding: 0;
-	}
-
-	.logout-button-top-right {
-		position: absolute;
-		top: 25px;
-		right: 25px;
-		background-color: red;
-		border: 1px solid black;
-		border-radius: 8px;
-		padding: 8px 12px;
-		cursor: pointer;
-		font-size: 0.9em;
-		z-index: 10;
-	}
-</style>
