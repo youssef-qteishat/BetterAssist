@@ -2,6 +2,7 @@
 	import { tick } from 'svelte';
 	let currentMessage = '';
 	let chatLogContainer: HTMLDivElement | null = null;
+	let fileInput: HTMLInputElement;
 
 	let chatLogs: { sender: 'user' | 'ai'; text: string }[] = [
 		{ sender: 'ai', text: 'Hi there! What roadmap would you like to create?' } 
@@ -25,6 +26,22 @@
 			}
 		});
 	}
+
+	function handleFileInputClick() {
+		fileInput.click();
+	}
+
+	function handleFileInput(e: Event) {
+		const target = e.target as HTMLInputElement;
+		if (target.files && target.files.length > 0) {
+			const file = target.files[0];
+			console.log('File selected:', file.name);
+			chatLogs = [
+				...chatLogs, 
+				{ sender: 'user', text: `Attached file: ${file.name}` }
+			];
+		}
+	}
 </script>
 
 <div class="roadmap-generator">
@@ -40,10 +57,19 @@
 
 	<form class="chat-input" on:submit|preventDefault={handleSubmit}>
 		<input
+			type="file"
+			bind:this={fileInput}
+			on:change={handleFileInput}
+			hidden
+		/>
+		<input
 			type="text"
 			bind:value={currentMessage}
 			placeholder="Text..."
 		/>
+		<button type="button" class="attach-button" on:click={handleFileInputClick}>
+			📎
+		</button>
 		<button type="submit">↑</button>
 	</form>
 </div>
@@ -125,6 +151,18 @@
 		cursor: pointer;
 		font-size: 1.2em;
 		font-weight: bold;
+	}
+
+	.attach-button {
+		padding: 0 12px;
+		border: 1px solid black;
+		background-color: #6A5ACD;
+		color: white;
+		border-radius: 50%;
+		cursor: pointer;
+		font-size: 1.2em;
+		margin-right: 8px;
+		flex-shrink: 0; 
 	}
 
 	input::placeholder {
