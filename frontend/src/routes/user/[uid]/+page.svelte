@@ -24,7 +24,7 @@
 {#if user && meta}
 	<h1 class="welcome-text">Hi {meta.first_name}!</h1>
 	<button on:click={handleLogout} class="logout-button-top-right">Log Out</button>
-	<div>
+	<div class="flex flex-col md:flex-row gap-6 w-full max-w-6xl mx-auto px-4 py-8 items-start">
 		<RoadmapBox />
 		<GenerateRoadmap />
 	</div>
