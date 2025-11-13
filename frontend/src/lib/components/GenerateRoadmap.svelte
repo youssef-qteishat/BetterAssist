@@ -4,7 +4,7 @@
 	let chatLogContainer: HTMLDivElement | null = null;
 
 	let chatLogs: { sender: 'user' | 'ai'; text: string }[] = [
-		{ sender: 'ai', text: 'Roadmap shows up here eventually' } 
+		{ sender: 'ai', text: 'Hi there! What roadmap would you like to create?' } 
 	];
 
 	function handleSubmit() {
