@@ -3,6 +3,7 @@
 	import { goto } from '$app/navigation';
 	import { onMount } from 'svelte';
 	import GenerateRoadmap from '$lib/components/GenerateRoadmap.svelte';
+	import RoadmapBox from '$lib/components/RoadmapBox.svelte';
 
 	$: user = $sessionStore?.user;
 	$: meta = $sessionStore?.user?.user_metadata;
@@ -24,6 +25,7 @@
 	<h1 class="welcome-text">Hi {meta.first_name}!</h1>
 	<button on:click={handleLogout} class="logout-button-top-right">Log Out</button>
 	<div>
+		<RoadmapBox />
 		<GenerateRoadmap />
 	</div>
 {:else}
