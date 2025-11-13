@@ -1,6 +1,6 @@
 import hashlib
-from langchain_unstructured import UnstructuredLoader as UnstructuredFileLoader
-from langchain_openai import OpenAIEmbeddings
+from langchain_unstructured import UnstructuredLoader
+from langchain.embeddings import OpenAIEmbeddings
 from db.chroma_init import init_chroma_store
 
 def compute_pdf_hash(pdf_path: str) -> str:
