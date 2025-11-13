@@ -58,7 +58,7 @@
 		border-radius: 16px;
 		padding: 12px;
 		box-sizing: border-box;
-        background-color: rgb(120, 60, 120);
+        background-color: #9370DB;
 		overflow: hidden;
 	}
 
@@ -91,12 +91,12 @@
 	}
 
 	.chat-bubble.ai {
-        background-color: rgb(117, 23, 117);
+        background-color: #8A2BA2;
 		align-self: flex-start;
 	}
 
 	.chat-bubble.user {
-		background-color: rgb(214, 8, 214);
+		background-color: #6A5ACD;
 		align-self: flex-end;
 	}
 
@@ -112,14 +112,14 @@
 		border-radius: 16px;
 		padding: 8px 12px;
 		margin-right: 8px;
-		background-color: rgb(214, 8, 214);
+		background-color: #6A5ACD;
 		color: white;
 	}
 
 	.chat-input button {
 		padding: 0 12px;
 		border: 1px solid black;
-		background-color: rgb(214, 8, 214);
+		background-color: #6A5ACD;
 		color: white;
 		border-radius: 50%;
 		cursor: pointer;
