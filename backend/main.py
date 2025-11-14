@@ -15,6 +15,11 @@ class RegisterRequest(BaseModel):
     email: str
     password: str
 
+class GenerateRoadmapRequest(BaseModel):
+    pass
+
+class ShowRoadmapRequest(BaseModel):
+    pass
 
 app = FastAPI()
 
