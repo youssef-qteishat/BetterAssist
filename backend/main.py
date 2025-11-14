@@ -63,3 +63,11 @@ async def register_user(register_request: RegisterRequest):
         return {"user": response.user.dict(), "session": response.session.dict()}
     except Exception as e:
         return {"error": str(e)}
+
+@app.get("/api/show_roadmaps")
+async def show_roadmaps():
+    pass
+
+@app.get("/api/generate_roadmap")
+async def generate_roadmap():
+    pass
