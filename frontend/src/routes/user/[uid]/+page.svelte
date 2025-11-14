@@ -2,7 +2,8 @@
 	import { sessionStore } from '$lib/sessionStore';
 	import { goto } from '$app/navigation';
 	import { onMount } from 'svelte';
-	import GenerateRoadmap from '$lib/components/GenerateRoadmap.svelte';
+	// import GenerateRoadmap from '$lib/components/GenerateRoadmap.svelte';
+	import AssistForm from '$lib/components/AssistForm.svelte';
 
 	$: user = $sessionStore?.user;
 	$: meta = $sessionStore?.user?.user_metadata;
@@ -24,7 +25,8 @@
 	<h1 class="welcome-text">Hi {meta.first_name}!</h1>
 	<button on:click={handleLogout} class="logout-button-top-right">Log Out</button>
 	<div>
-		<GenerateRoadmap />
+		<!-- <GenerateRoadmap /> -->
+		<AssistForm />
 	</div>
 {:else}
 	<p>Loading user data...</p>
