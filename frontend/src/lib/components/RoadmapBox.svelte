@@ -1,11 +1,31 @@
 <script lang="ts">
 	// Array of placeholder roadmap items
 	const roadmaps = [
-		{ id: 1, title: 'Computer Science - UC Berkeley', description: '3-year plan' },
-		{ id: 2, title: 'Biomedical Engineering - UCSD', description: '2-year plan' },
-		{ id: 3, title: 'Medicine - UCSF', description: '2-year plan' },
-		{ id: 4, title: 'Cybersecurity - UCLA', description: '1-year plan' },
-		{ id: 5, title: 'AI & Machine Learning - Stanford', description: '1-year plan' }
+		{
+			id: 1,
+			title: 'Diablo Valley College (Computer Science) → UC Berkeley (Computer Science)',
+			description: '3-year plan'
+		},
+		{
+			id: 2,
+			title: 'Los Angeles College (Biomedical Engineering) → UCSD (Biomedical Engineering)',
+			description: '2-year plan'
+		},
+		{
+			id: 3,
+			title: 'Mission College | West Valley College (Biology) → UC Davis (Biology)',
+			description: '2-year plan'
+		},
+		{
+			id: 4,
+			title: 'De Anza College (Cybersecurity) → UCLA (Cybersecurity)',
+			description: '1-year plan'
+		},
+		{
+			id: 5,
+			title: 'Berkeley City College (AI & Machine Learning) → Stanford (AI & Machine Learning)',
+			description: '1-year plan'
+		}
 	];
 
 	function selectRoadmap(roadmapId: number) {
