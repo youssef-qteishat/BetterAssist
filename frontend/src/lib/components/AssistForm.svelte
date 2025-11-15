@@ -366,6 +366,24 @@
 			selectedFileName = '';
 		}
 	}
+
+    function handleSubmit() {
+		console.log('Academic Year:', selectedYear);
+		console.log('Major:', selectedMajor);
+		console.log('Community College:', selectedCC);
+		console.log('University:', selectedUni);
+		console.log('Attached File:', selectedFileName);
+
+		selectedYear = '';
+		selectedMajor = '';
+		selectedCC = '';
+		selectedUni = '';
+		selectedFileName = '';
+
+		if (fileInput) {
+			fileInput.value = '';
+		}
+	}
 </script>
 
 <div class="form-container">
@@ -428,6 +446,12 @@
 			<span class="file-name">{selectedFileName}</span>
 		{/if}
 	</div>
+
+    <div class="form-group submit-group">
+		<button type="button" class="submit-button" on:click={handleSubmit}>
+			Submit
+		</button>
+	</div>
 </div>
 
 <style>
@@ -485,5 +509,23 @@
 		margin-left: 12px;
 		font-style: italic;
 		color: #333;
+	}
+
+    .submit-group {
+		margin-top: 24px; 
+		margin-bottom: 0; 
+		text-align: center;
+	}
+
+	.submit-button {
+		padding: 12px 24px;
+		border: 1px solid #5a4aac;
+		background-color: #6A5ACD;
+		color: white;
+		border-radius: 8px;
+		cursor: pointer;
+		font-size: 1.1em;
+		font-weight: bold;
+		width: 100%;
 	}
 </style>
