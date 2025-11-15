@@ -2,6 +2,7 @@
 	let selectedYear = '';
 	let selectedCC = '';
 	let selectedUni = '';
+    let selectedMajor = '';
 
 	let fileInput: HTMLInputElement;
 	let selectedFileName = '';
@@ -25,6 +26,15 @@
 		'UC Berkeley',
 		'Stanford University',
 		'Santa Clara University'
+	];
+    const majors = [
+		'Computer Science',
+		'Engineering',
+		'Business Administration',
+		'Psychology',
+		'Biology',
+		'Art',
+		'English'
 	];
 
 	function triggerFileClick() {
@@ -51,6 +61,16 @@
 			<option disabled value="">Select Year...</option>
 			{#each academicYears as year}
 				<option value={year}>{year}</option>
+			{/each}
+		</select>
+	</div>
+
+    <div class="form-group">
+		<label for="major">Major</label>
+		<select id="major" bind:value={selectedMajor}>
+			<option disabled value="">Select Major...</option>
+			{#each majors as major}
+				<option value={major}>{major}</option>
 			{/each}
 		</select>
 	</div>
