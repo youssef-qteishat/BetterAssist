@@ -4,6 +4,7 @@
 	import { onMount } from 'svelte';
 	import GenerateRoadmap from '$lib/components/GenerateRoadmap.svelte';
 	import RoadmapBox from '$lib/components/RoadmapBox.svelte';
+	import AssistForm from '$lib/components/AssistForm.svelte';
 
 	$: user = $sessionStore?.user;
 	$: meta = $sessionStore?.user?.user_metadata;
@@ -24,9 +25,15 @@
 {#if user && meta}
 	<h1 class="welcome-text">Hi {meta.first_name}!</h1>
 	<button on:click={handleLogout} class="logout-button-top-right">Log Out</button>
+<<<<<<< HEAD
 	<div class="flex flex-col md:flex-row gap-6 w-full max-w-6xl mx-auto px-4 py-8 items-start">
 		<RoadmapBox />
 		<GenerateRoadmap />
+=======
+	<div>
+		<!-- <GenerateRoadmap /> -->
+		<AssistForm />
+>>>>>>> origin/1-implement-chat-ui
 	</div>
 {:else}
 	<p>Loading user data...</p>
